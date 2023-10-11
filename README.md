@@ -25,12 +25,15 @@
   - IMU : MPU-6050
   - ラインセンサ : LBR-127HLD
   - ADコンバータ : MCP3208
-
-
+    
+## 3.改良点
 - ラインセンサ
   
-Raspberry Pi Picoにはユーザが使えるADCが3つしかありません．そのため，ADコンバータによるADCの増設を行いました。
-<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/5d4b12e6-783b-444a-a7d2-bf73ace43d1b" width="400px">
+Raspberry Pi Picoにはユーザが使えるADCが3つしかありません．そのため，ADコンバータによるADCの増設を行いました。(適当に買ったやつがたまたま12bitだった…ｱﾌﾞﾈ)
+
+<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/81f3ebca-04ac-492f-b433-5287070fb427" width="400px">
+
+## 3.制御方法
 
 
  ```Swift
