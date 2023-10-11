@@ -29,9 +29,25 @@
 ## 3.改良点
 - ラインセンサ
   
-Raspberry Pi Picoにはユーザが使えるADCが3つしかありません．そのため，ADコンバータによるADCの増設を行いました。(適当に買ったやつがたまたま12bitだった…ｱﾌﾞﾈ)
+Raspberry Pi Picoにはユーザが使えるADCが3つしかありません．そのため，12bitADコンバータによるADCの増設を行いました。(適当に買ったやつがたまたま12bitだった…ｱﾌﾞﾈ)
 
 <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/81f3ebca-04ac-492f-b433-5287070fb427" width="400px">
+```Swift
+  encoder = TIMX -> CNT;
+  encoder = (encoder - 32767);
+  
+  speed = ((297 * M_PI) / 1146.9) * encoder;
+  
+  TIMX -> CNT = 32767;
+  ```
+- モータref電圧の上昇
+ref電圧を上げた
+
+- IMUの搭載
+ジャイロセンサ乗っけた
+
+- CPU層
+それらに合わせて基盤を作った
 
 ## 3.制御方法
 
