@@ -13,9 +13,9 @@
 
 - スペック
   - L×W×H[mm] : 155x111x80
-  - 重量[g] : 
+  - 重量[g] : 700
   - タイヤ径[mm] : 52
-  - 最高速度[m/s] : 
+  - 最高速度[m/s] : 2.5
   - 最高加速度[m/s^2] : 
 
 
@@ -28,4 +28,14 @@
 
 
 - ラインセンサ
-Raspberry Pi Picoにはユーザが使えるADCが3つしかありません．そのため，ADコンバータによるADCの増設をしました．
+  
+Raspberry Pi Picoにはユーザが使えるADCが3つしかありません．そのため，ADコンバータによるADCの増設を行いました。
+
+ ```Swift
+  encoder = TIMX -> CNT;
+  encoder = (encoder - 32767);
+  
+  speed = ((297 * M_PI) / 1146.9) * encoder;
+  
+  TIMX -> CNT = 32767;
+  ```
