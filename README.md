@@ -32,6 +32,7 @@
 Raspberry Pi Picoにはユーザが使えるADCが3つしかありません．そのため，12bitADコンバータによるADCの増設を行いました。(適当に買ったやつがたまたま12bitだった…ｱﾌﾞﾈ)
 
 <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/81f3ebca-04ac-492f-b433-5287070fb427" width="400px">
+
 ```Swift
   encoder = TIMX -> CNT;
   encoder = (encoder - 32767);
@@ -40,13 +41,17 @@ Raspberry Pi Picoにはユーザが使えるADCが3つしかありません．�
   
   TIMX -> CNT = 32767;
   ```
+
 - モータref電圧の上昇
+  
 ref電圧を上げた
 
 - IMUの搭載
+  
 ジャイロセンサ乗っけた
 
 - CPU層
+  
 それらに合わせて基盤を作った
 
 ## 3.制御方法
