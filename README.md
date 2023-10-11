@@ -32,7 +32,6 @@
 Raspberry Pi Picoにはユーザが使えるADCが3つしかありません．そのため，ADコンバータによるADCの増設を行いました。
 <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/5d4b12e6-783b-444a-a7d2-bf73ace43d1b" width="400px">
 
-
  ```Swift
   encoder = TIMX -> CNT;
   encoder = (encoder - 32767);
