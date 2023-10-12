@@ -108,7 +108,8 @@
 PD制御を用いてラインへの追従をしています．PD制御を行うには偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2…R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1～k5 をかけています。
 
 
-<img src="https://latex.codecogs.com/svg.image?\tiny&space;&space;e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)" width="1500px">
+
+<img src="https://latex.codecogs.com/svg.image?\tiny&space;&space;e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)" title=" e=(L5K5+L4K4+L3K3+L2K2+L1K1)-(R5K5+R4K4+R3K3+R2K2+R1K1)" width="4000px"/>
 
 PD制御により制御量Controlを算出します。
 
