@@ -1,8 +1,7 @@
 # 2023_RoboTracer
 ## 1.概要
 　この機体は，ロボトレース競技に参加するためにサークル標準機を改良したロボットです．ロボトレを始めてから1年が経過したため，今までの改良をまとめようと思います．
-
-　このリポジトリは，改良内容の言語化による問題点の明確化，後輩に改良の一例として提示したいという目的で作成しました．そのため，
+ また，改良内容の言語化による問題点の明確化，サークル内の情報の共有目的で作成しました．そのため，
  
 ## 2.ディレクトリ構造
 
@@ -15,7 +14,7 @@
 
 ## 4.機体説明
 <p align="center">
- <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/6678fec6-45e2-4e66-b0d3-dd4fd7b67914" width="400px">
+ <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/6678fec6-45e2-4e66-b0d3-dd4fd7b67914" width="500px">
 </p>
 
 - 機体名 : Savoia S.21M
@@ -41,9 +40,9 @@
 - ラインセンサ
 
   　Raspberry Pi Picoには，ユーザが使えるADCが3つしかありません．そのため，12bitの外付けADコンバータによるADCの増設をしました．ラズピコの2チャンネル+ADコンバータの8チャンネルを使用し，計10個のラインセンサを使えるようにしました．
-<p align="center">
- <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/81f3ebca-04ac-492f-b433-5287070fb427" width="400px">
-</p>
+  <p align="center">
+   <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/81f3ebca-04ac-492f-b433-5287070fb427" width="500px">
+  </p>
 
 
 
@@ -56,27 +55,29 @@
   
     　2次走行を行うにはロボットの角度を取得する必要があるため，ジャイロセンサを搭載しました．偶然手持ちにあったMPU6050を使用しています．
   
-  <p align="center">
-    <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/0492ced1-3b90-49bc-9984-d6cbd6b88eaa" width="400px">
-  </p>
+    <p align="center">
+      <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/0492ced1-3b90-49bc-9984-d6cbd6b88eaa" width="500px">
+    </p>
 
 
 
 
   走行中の角速度をグラフにすると，以下のようになります．
 
-  <p align="center">
-   <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/624c51fc-5e0c-4b81-ba9d-a0cc6703ef79" width="700px">
-  </p>
+    <p align="center">
+     <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/624c51fc-5e0c-4b81-ba9d-a0cc6703ef79" width="700px">
+    </p>
 
   
   ある範囲外の値を取得できていないことが分かります．これはジャイロのフルスケールレンジが関係しています．MPU6050の初期フルスケールレンジは±250°となっているため，以下のようにして±2000°に設定します．
 
   ```Swift
+  
   #define MPU6050_ADDRESS 0x68
   
   uint8_t leg[] = {0x1B, 0x18};
   i2c_write_blocking(gyro_i2c, MPU6050_ADDRESS,leg, sizeof(leg), false );
+  
   ```
 
 
@@ -103,7 +104,9 @@
 
 PD制御を用いてラインへの追従をしています．PD制御を行うには以下のように偏差eを求める必要があります．
 
-<img src="https://latex.codecogs.com/svg.image?\small&space;&space;e=(L5k5&plus;L4k4&plus;L3k3&plus;L2k5&plus;L2k2&plus;L1k1)-(R5k5&plus;R4k4&plus;R3k3&plus;R2k5&plus;R2k2&plus;R1k1)">
+<img src="https://latex.codecogs.com/svg.image?\large&space;&space;e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;1K1)">
+
+
 ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2…R5 とし，セン
 サのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1～k5 をかけている．
 
