@@ -69,7 +69,7 @@ MCP3208によるアナログ値取得プログラム
   [参考にさせていただいたサイト](https://github.com/raspberrypi/pico-examples/blob/master/i2c/mpu6050_i2c/mpu6050_i2c.c)
 
 走行中の角速度をグラフにすると、以下のようになります。
-![IMG_4644](https://github.com/MasA-23/2023_RoboTracer/issues/5#issue-1939070280)
+![image](https://github.com/MasA-23/2023_RoboTracer/assets/147514546/624c51fc-5e0c-4b81-ba9d-a0cc6703ef79)
 
 ある範囲外の値を取得できていないことが分かります。これはジャイロのフルスケールレンジが関係しています。MPU6050では、特に設定しない限りフルスケールレンジは±250°となっているため、以下のようにして±2000°に設定します。
 
