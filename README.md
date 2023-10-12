@@ -56,9 +56,9 @@
   
     　2次走行を行うにはロボットの角度を取得する必要があるため，ジャイロセンサを搭載しました．偶然手持ちにあったMPU6050を使用しています．
   
-<p align="center">
-  <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/0492ced1-3b90-49bc-9984-d6cbd6b88eaa" width="400px">
-</p>
+  <p align="center">
+    <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/0492ced1-3b90-49bc-9984-d6cbd6b88eaa" width="400px">
+  </p>
 
 
 
