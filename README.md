@@ -80,7 +80,7 @@ MCP3208によるアナログ値取得プログラム
   ```
 
 改めてグラフを作ると、値を正しく取得できている事が分かります。
-
+![image](https://github.com/MasA-23/2023_RoboTracer/assets/147514546/58d972e7-bb50-4bb1-8cac-d082c630e14f)
 
 - CPU層
 
