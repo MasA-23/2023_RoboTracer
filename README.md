@@ -63,9 +63,9 @@
 
   走行中の角速度をグラフにすると，以下のようになります．
 
-  <p align="center">
-  <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/624c51fc-5e0c-4b81-ba9d-a0cc6703ef79" width="800px">
-  </p>
+<p align="center">
+　<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/624c51fc-5e0c-4b81-ba9d-a0cc6703ef79" width="800px">
+</p>
 
 
   一定範囲外の値を正しく取得できていないことが分かります．これはジャイロのフルスケールレンジが関係しています．MPU6050の初期フルスケールレンジは±250°となっているため，以下のようにして±2000°に設定します．
@@ -91,7 +91,9 @@
 
    　標準機のCPU基盤はサイズが大きいため、ラインセンサとの干渉がありました。また、ADコンバータやジャイロセンサの搭載に対応させるため、CPU基盤を新たに製作しました。
 
-![IMG-4548](https://github.com/MasA-23/2023_RoboTracer/assets/147514546/f866006d-cce5-4cd9-96a5-14833bb76c3b)
+<p align="center">
+　<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/f866006d-cce5-4cd9-96a5-14833bb76c3b" width="500px">
+</p>
 
 - シャーシの製作
 
@@ -105,8 +107,7 @@
 
 PD制御を用いてラインへの追従をしています．PD制御を行うには偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2…R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1～k5 をかけています。
 
-<img src="https://latex.codecogs.com/svg.image?\large&space;&space;e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;1K1)">
-
+<img src="https://latex.codecogs.com/svg.image?\large&space;&space;e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;1K1)" width="500px">
 
 PD制御により制御量Controlを算出します。
 
