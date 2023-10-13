@@ -104,31 +104,26 @@
 ## 6.制御方法
 
   PD制御を用いてラインへの追従をしています．PD制御を行うには偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2…R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1～k5 をかけます．
-
-
-
-
-<img src="https://latex.codecogs.com/svg.image?&space;e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-" title=" e=(L5K5+L4K4+L3K3+L2K2+L1K1)-" /><img src="https://latex.codecogs.com/svg.image?(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)" title="(R5K5+R4K4+R3K3+R2K2+R1K1)" />
-
+  
+<p align="center">
+<img src="https://latex.codecogs.com/svg.image?\inline&space;e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-" title="e=(L5K5+L4K4+L3K3+L2K2+L1K1)-" />
+<img src="https://latex.codecogs.com/svg.image?\inline&space;(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)" title="(R5K5+R4K4+R3K3+R2K2+R1K1)" />
+</p>
 
 PD制御により制御量Controlを算出します．
 
+<p align="center">
 <img src="https://latex.codecogs.com/svg.image?Control(t)=K_{P}e(t)&plus;K_{D}e\dot{}(t)" title="Control(t)=K_{P}e(t)+K_{D}e\dot{}(t)" />
+</p>
 
+速度Vに制御量を与えて<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{r}" title="V_{r}" />と<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{l}" title="V_{l}" />を算出します。
 
-速度Vに制御量を与えてVrとvlを算出します。
-
-
-
- ```Swift
-  encoder = TIMX -> CNT;
-  encoder = (encoder - 32767);
-  
-  speed = ((297 * M_PI) / 1146.9) * encoder;
-  
-  TIMX -> CNT = 32767;
-  ```
-
+<p align="center">
+<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{r}=V&plus;Control" title="V_{r}=V+Control" />
+ </p>
+ <p align="center">
+<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{l}=V-Control" title="V_{l}=V-Control" />
+</p>
 
 ## 7.ゴール判断
 
@@ -137,21 +132,27 @@ PD制御により制御量Controlを算出します．
 
 ## 8.ジャイロセンサを用いた角度の算出
 
-ロボットの角度は、角速度を積分する事で求められます。積分には様々な方法がありますが、計算での誤差を少なくするため、台形則を用います。面積を台形で近似するやつです。
+　ロボットの角度は、角速度を積分する事で求められます。積分には様々な方法がありますが、計算での誤差を少なくするため、台形則を用います。面積を台形で近似するやつです。
 
+<p align="center">
+<img src="https://latex.codecogs.com/svg.image?\inline&space;\theta_{t}=\theta&space;_{t-1}&plus;(\omega&space;_{t}&plus;\omega&space;_{t-1})\Delta&space;t/2" title="\theta_{t}=\theta _{t-1}+(\omega _{t}+\omega _{t-1})\Delta t/2" />
+</p>
 
-𝜽𝒕=𝜽𝒕+ 𝝎𝒕+𝝎𝒕−𝟏 ∆𝒕Τ𝟐 
+<p align="center">
+<img src="https://latex.codecogs.com/svg.image?\inline&space;\Delta&space;t" title="\Delta t" /> : サンプリング周期[ms]，<img src="https://latex.codecogs.com/svg.image?\inline&space;\omega&space;_{t}" title="\omega _{t}" /> : t秒の角速度[deg]
+</p>
 
-∆𝒕:サンプリング周期[ms]，𝝎𝒕:t秒の角速度[deg
+　一応これでも角度の算出はできますが、オフセットなどによるドリフトが発生します。センサを1分間静止させた時の角度のずれを以下に示します
 
+　平均すると約5°のずれが生じることが分かりました。ドリフトを補正するため、センサのキャリブレーションを行います。静止時に取得した角速度の平均値と
 
-一応これでも角度の算出はできますが、オフセットによるドリフトが発生します。センサを1分間静止させた時の角度のずれを以下に示します
+<p align="center">
+<img src="https://latex.codecogs.com/svg.image?\inline&space;\theta_{t}=\theta&space;_{t-1}&plus;(\omega_{t}-offset&plus;\omega_{t-1})\Delta&space;t/2)-drift" title="\theta_{t}=\theta _{t-1}+(\omega_{t}-offset+\omega_{t-1})\Delta t/2)-drift" />
+ </p>
+ 
+offset : 静止時に取得した角速度の平均値
 
-平均すると約5°のずれが生じることが分かりました。ドリフトを補正するため、センサのキャリブレーションを行います。静止時に角速度の平均値と
-
-
-𝜽𝒕 = 𝜽𝒕 + 𝝎𝒕 − オフセット補正値 + 𝝎𝒕−𝟏 ∆𝒕Τ𝟐 − ドリフト補正値
-オフセット補正値:静止時に取得した角速度の平均値 ドリフト補正値:一定時間ジャイロセンサを静止させ， 最後に取得した角速度をサンプリング周期当たりの補正値に変換したもの
+drift : 一定時間ジャイロセンサを静止させ，最後に取得した角速度をサンプリング周期当たりの補正値に変換したもの
 
 ## 9.マッピング
 　加減速走行を行うには，再現性のある走行とコースの記憶が必要となります．そのため走行経路を2次元座標にプロットし，再現性の確認とコースの記憶をできるようにしました．加減速走行をするだけなら，区間距離と角速度情報があればわざわざコースのプロットをする必要がありません．しかし，まだ先の話ですがショートカット走行を行う際に役立つと考えたので先行開発しました．
