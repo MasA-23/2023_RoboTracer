@@ -148,24 +148,34 @@ $\omega_{t}\>$ : t秒の角速度[deg]
 　一応これで角度の算出はできますが、オフセットなどによるドリフトが発生します。センサを1分間静止させた時の角度のずれを以下に示します
 
 　平均すると約5°のずれが生じることが分かりました。ドリフトを補正するため、センサのキャリブレーションを行います。静止時にオフセット値を取得し，
+ 
+ <p align="center">
+  $\theta _{t}=\theta _{t-1}+\left((\omega _{t}-offset+\omega _{t-1}\right)\Delta t/2)-drift$
+ </p>
 
+ <p align="center">
+  $offset$ : 静止時の平均角速度，
+ </p>
 
-<p align="center">
- $\theta _{t}=\theta _{t-1}+\left((\omega _{t}-offset+\omega _{t-1}\right)\Delta t/2)-drift$
-</p>
+ <p align="center">
+  $drift$ : 一定時間ジャイロセンサを静止させ，
+ </p>
 
-<p align="center">
- $offset$ : 静止時の平均角速度，
-</p>
+ <p align="center">
+  最後に取得した角速度をサンプリング周期当たりの補正値に変換したもの
+ </p>
+ <br>
+ <br>
 
-<p align="center">
- $drift$ : 一定時間ジャイロセンサを静止させ，
-</p>
+ プログラム言語で記述すると以下のようになります．
 
-<p align="center">
- 最後に取得した角速度をサンプリング周期当たりの補正値に変換したもの
-</p>
+```Swift
+#define GYRO_SENSITIVITY 16.4
+#define DELTA_T 0.003
 
+degree += ( ( ( (float)gyro[2]-gyro_offset + degree_pre ) / GYRO_SENSITIVITY ) * DELTA_T / 2 ) - gyro_drift;
+degree_pre = (float)gyro[2] - gyro_offset;
+```
 
 ## 9.マッピング
 　加減速走行を行うには，再現性のある走行とコースの記憶が必要となります．そのため走行経路を2次元座標にプロットし，再現性の確認とコースの記憶をできるようにしました．加減速走行をするだけなら，区間距離と角速度情報があればわざわざコースのプロットをする必要がありません．しかし，まだ先の話ですがショートカット走行を行う際に役立つと考えたので先行開発しました．
