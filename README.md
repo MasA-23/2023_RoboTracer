@@ -3,7 +3,6 @@
 　この機体は，ロボトレース競技に参加するためにサークル標準機を改良したロボットです．ロボトレを始めてから1年が経過したため，今までの改良をまとめようと思います．また，改良内容の言語化による問題点の明確化やサークル内での情報共有も目的としています．
 
 
-
  
 ## 2.ディレクトリ構造
 
@@ -109,7 +108,10 @@
   PD制御を用いてラインへの追従をしています．PD制御を行うには偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2…R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1～k5 をかけます．
   
 <p align="center">
-$e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)$
+$e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-$
+ </p>
+ <p align="center">
+ $(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)$
 </p>
 
 PD制御により制御量Controlを算出します．
@@ -117,6 +119,8 @@ PD制御により制御量Controlを算出します．
 <p align="center">
 $Control(t)=K_{P}e(t)&plus;K_{D}\dot{e}(t)$
 </p>
+
+
 
 速度Vに制御量を与えて<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{r}" title="V_{r}" />と<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{l}" title="V_{l}" />を算出します。
 
