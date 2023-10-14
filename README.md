@@ -55,24 +55,19 @@
 - IMUの搭載
   
     　加減速走行をするにはロボットの角度を取得する必要があるため，ジャイロセンサを搭載しました．偶然手持ちにあったMPU6050を使用しています．
+
+  <p align="center">
+   <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/0492ced1-3b90-49bc-9984-d6cbd6b88eaa" width="500px">
+  </p>
   
-    <p align="center">
-      <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/0492ced1-3b90-49bc-9984-d6cbd6b88eaa" width="500px">
-    </p>
-
-
-
-
-  走行中の角速度をグラフにすると，以下のようになります．
-
-<p align="center">
-　<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/624c51fc-5e0c-4b81-ba9d-a0cc6703ef79" width="800px">
-</p>
-
-
-  一定範囲外の値を正しく取得できていないことが分かります．これはジャイロのフルスケールレンジが関係しています．MPU6050の初期フルスケールレンジは±250°となっているため，以下のようにして±2000°に設定します．
-
-<details><summary>フルスケールレンジ変更プログラム</summary>
+  　走行中の角速度をグラフにすると，以下のようになります．
+  <p align="center">
+   <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/624c51fc-5e0c-4b81-ba9d-a0cc6703ef79" width="800px">
+  </p>
+  
+  　一定範囲外の値を正しく取得できていないことが分かります．これはジャイロのフルスケールレンジが関係しています．MPU6050の初期フルスケールレンジは±250°となっているため，±2000°に設定します．
+  
+  <details><summary>フルスケールレンジ変更プログラム</summary>
  
   ```Swift
   
@@ -82,10 +77,10 @@
   i2c_write_blocking(gyro_i2c, MPU6050_ADDRESS,leg, sizeof(leg), false );
   
   ```
-</details>
+  </details>
+  <br>
 
-
-  改めてグラフを作ると，値を正しく取得できている事が分かります．
+  　改めてグラフを作ると，値を正しく取得できている事が分かります．
  
 <p align="center">
 <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/64335dca-c771-4c69-a1c2-abb5698ec233" width="800px">
@@ -108,12 +103,12 @@
 ## 6.制御方法
  　PD制御を用いてラインへの追従をしています．PD制御を行うには偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2...R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1，k2...k5 をかけます．
   
-  <p align="center">
-   $e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-$
-  </p>
-  <p align="center">
-   $(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)$
-  </p>
+  <table><tr><td>
+   <p align="center">
+    $e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-$
+    $(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)$
+   </p>
+  </td></tr></table>
   
   　PD制御により制御量Controlを算出します．
    
@@ -149,9 +144,25 @@ $\Delta t\>$ : サンプリング周期[ms]，
 $\omega_{t}\>$ : t秒の角速度[deg]
 </p>
 
-　一応これで角度の算出はできますが、オフセットなどによるドリフトが発生します。センサを1分間静止させた時の角度のずれを以下に示します
-
-　平均すると約5°のずれが生じることが分かりました。ドリフトを補正するため、センサのキャリブレーションを行います。静止時にオフセット値を取得し，
+　一応これで角度の算出はできますが、オフセットなどによるドリフトが発生します。
+ 
+ <details><summary>センサを1分間静止させた時の角度のずれ</summary>
+ 　<div align="center">
+   
+   | 回数 | 角度のずれ[deg/s] |
+   | :---: | :---: |
+   |1|-9.8005|
+   |2|-9.8118|
+   |3|-9.3929|
+   |4|-8.8925|
+   |5|-8.7566|
+  
+   </div>
+  </details>
+  
+  <br>
+  
+　平均すると約9.3°のずれが生じることが分かりました。ドリフトを補正するため、センサのキャリブレーションを行います。静止時にオフセット値を取得し，
  
  <p align="center">
   $\theta _{t}=\theta _{t-1}+\left((\omega _{t}-offset+\omega _{t-1}\right)\Delta t/2)-drift$
@@ -169,8 +180,7 @@ $\omega_{t}\>$ : t秒の角速度[deg]
   最後に取得した角速度をサンプリング周期当たりの補正値に変換したもの
  </p>
  <br>
- <br>
-
+ 
  プログラム言語で記述すると以下のようになります．
 
 ```Swift
