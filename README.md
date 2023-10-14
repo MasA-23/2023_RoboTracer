@@ -104,39 +104,34 @@
   　標準機のタイヤ幅8mmは，重量700gに対して薄すぎたため，グリップ力が足りず180°のR10でスリップしていました．そのためタイヤ幅を厚くするパーツを製作しました．スポークに摩擦で固定しています．
   
 ## 6.制御方法
-
-  PD制御を用いてラインへの追従をしています．PD制御を行うには偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2…R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1～k5 をかけます．
-
-<p align="center">
-$e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-$
- </p>
- <p align="center">
- $(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)$
-</p>
-
-PD制御により制御量Controlを算出します．
-
-<p align="center">
-$Control(t)=K_{P}e(t)&plus;K_{D}\dot{e}(t)$
-</p>
-
-
-
-速度Vに制御量を与えて<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{r}" title="V_{r}" />と<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{l}" title="V_{l}" />を算出します。
-
-<p align="center">
-$V_{r}=V&plus;Control$
-</p>
-<p align="center">
-$V_{l}=V-Control$
-</p>
-
+ 　PD制御を用いてラインへの追従をしています．PD制御を行うには偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2…R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1～k5 をかけます．
+  <p align="center">
+   $e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-$
+  </p>
+  <p align="center">
+   $(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)$
+  </p>
+  
+  　PD制御により制御量Controlを算出します．
+   
+   <p align="center">
+    $Control(t)=K_{P}e(t)&plus;K_{D}\dot{e}(t)$
+   </p>
+   
+   　速度Vに制御量を与えて<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{r}" title="V_{r}" />と<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{l}" title="V_{l}" />を算出します。
+    
+  <p align="center">
+   $V_{r}=V&plus;Control$
+  </p>
+    
+  <p align="center">
+   $V_{l}=V-Control$
+  </p>
 
 
 ## 7.ゴール判断
 
 　単純にゴールセンサが反応した時にゴール判断をしてしまうと，クロスでもゴールセンサが反応してしまいます．そのため，クロスではゴール判断をしないという処理が必要となります．ゴールセンサがクロスに反応する前にラインセンサがクロスにかかるので，ライセンサを使ってクロスの判断ができそうです．両端のラインセンサが反応した時にフラグを立て，フラグが立っている時にゴールセンサが反応したら無視すればクロス問題は解決できそうです．
-
 
 ## 8.ジャイロセンサを用いた角度の算出
 
