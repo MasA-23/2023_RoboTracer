@@ -106,7 +106,7 @@
 ## 6.制御方法
 
   PD制御を用いてラインへの追従をしています．PD制御を行うには偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2…R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1～k5 をかけます．
-  
+
 <p align="center">
 $e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-$
  </p>
@@ -157,7 +157,9 @@ $\omega_{t}\>$ : t秒の角速度[deg]
 
 
 <p align="center">
-$\theta _{t}=\theta _{t-1}+\left((\omega _{t}-offset+\omega _{t-1}\right)\Delta t/2)-drift\>$
+$$
+ \theta _{t}=\theta _{t-1}+\left((\omega _{t}-offset+\omega _{t-1}\right)\Delta t/2)-drift\>
+ $$
  </p>
 
 offset : 静止時に取得した角速度の平均値
