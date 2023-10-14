@@ -1,6 +1,9 @@
 # 2023_RoboTracer
 ## 1.概要
 　この機体は，ロボトレース競技に参加するためにサークル標準機を改良したロボットです．ロボトレを始めてから1年が経過したため，今までの改良をまとめようと思います．また，改良内容の言語化による問題点の明確化やサークル内での情報共有も目的としています．
+
+
+
  
 ## 2.ディレクトリ構造
 
@@ -112,7 +115,7 @@ $e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-(R5K5&plus;R4K4&plus;R3K3&plus
 PD制御により制御量Controlを算出します．
 
 <p align="center">
-$Control(t)=K_{P}e(t)&plus;K_{D}e\dot{}(t)$
+$Control(t)=K_{P}e(t)&plus;K_{D}\dot{e}(t)$
 </p>
 
 速度Vに制御量を与えて<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{r}" title="V_{r}" />と<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{l}" title="V_{l}" />を算出します。
@@ -124,6 +127,8 @@ $V_{r}=V&plus;Control$
 $V_{l}=V-Control$
 </p>
 
+
+
 ## 7.ゴール判断
 
 　単純にゴールセンサが反応した時にゴール判断をしてしまうと，クロスでもゴールセンサが反応してしまいます．そのため，クロスではゴール判断をしないという処理が必要となります．ゴールセンサがクロスに反応する前にラインセンサがクロスにかかるので，ライセンサを使ってクロスの判断ができそうです．両端のラインセンサが反応した時にフラグを立て，フラグが立っている時にゴールセンサが反応したら無視すればクロス問題は解決できそうです．
@@ -134,21 +139,23 @@ $V_{l}=V-Control$
 　ロボットの角度は、角速度を積分する事で求められます。積分には様々な方法がありますが、計算での誤差を少なくするため、台形則を用います。面積を台形で近似するやつです。
 
 <p align="center">
-<img src="https://latex.codecogs.com/svg.image?\inline&space;\theta_{t}=\theta&space;_{t-1}&plus;(\omega&space;_{t}&plus;\omega&space;_{t-1})\Delta&space;t/2" title="\theta_{t}=\theta _{t-1}+(\omega _{t}+\omega _{t-1})\Delta t/2" />
+$\theta _{t}=\theta _{t-1}+\left(\omega _{t}+\omega _{t-1}\right)\Delta t/2\>$
 </p>
 
 <p align="center">
-<img src="https://latex.codecogs.com/svg.image?\inline&space;\Delta&space;t" title="\Delta t" /> : サンプリング周期[ms]，<img src="https://latex.codecogs.com/svg.image?\inline&space;\omega&space;_{t}" title="\omega _{t}" /> : t秒の角速度[deg]
+$\Delta t\>$ : サンプリング周期[ms]，
+$\omega_{t}\>$ : t秒の角速度[deg]
 </p>
 
 　一応これでも角度の算出はできますが、オフセットなどによるドリフトが発生します。センサを1分間静止させた時の角度のずれを以下に示します
 
 　平均すると約5°のずれが生じることが分かりました。ドリフトを補正するため、センサのキャリブレーションを行います。静止時に取得した角速度の平均値と
 
+
 <p align="center">
-<img src="https://latex.codecogs.com/svg.image?\inline&space;\theta_{t}=\theta&space;_{t-1}&plus;(\omega_{t}-offset&plus;\omega_{t-1})\Delta&space;t/2)-drift" title="\theta_{t}=\theta _{t-1}+(\omega_{t}-offset+\omega_{t-1})\Delta t/2)-drift" />
+$\theta _{t}=\theta _{t-1}+\left((\omega _{t}-offset+\omega _{t-1}\right)\Delta t/2)-drift\>$
  </p>
- 
+
 offset : 静止時に取得した角速度の平均値
 
 drift : 一定時間ジャイロセンサを静止させ，最後に取得した角速度をサンプリング周期当たりの補正値に変換したもの
