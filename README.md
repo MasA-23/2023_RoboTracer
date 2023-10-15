@@ -127,10 +127,26 @@
   <div align="center">
    <table><tr><td>
     $V_{r}=V&plus;Control$
-    <br>$V_{l}=V-Control　$
+    <br>$V_{l}=V-Control$
    </td></tr></table>
   </div>
+  
+  
+  <details><summary>PD制御プログラム</summary>
+   
+   ```Swift
 
+dev = ( sen_val_c[9]*k5 + sen_val_c[7]*k4 + sen_val_c[6]*k3 + sen_val_c[5]*k2 + sen_val_c[4] ) - ( sen_val_c[8]*k5 + sen_val_c[0]*k4 + sen_val_c[1]*k3 + sen_val_c[2]*k2 + sen_val_c[3] );
+
+control =  kp * dev  +  ( dev-dev_pre ) / 0.0004 * kd ;
+
+target_spd_l = target_spd + control;
+target_spd_r = target_spd - control;
+
+dev_pre = dev;
+```
+</details>
+<br>
 
 ## 7.ゴール判断
 
