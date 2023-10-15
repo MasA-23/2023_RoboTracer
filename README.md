@@ -105,8 +105,12 @@
   
   <div align="center">
     <table><tr><td>
-     $e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-$
-     $(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)$
+     <div align="center">
+      $　e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-　$
+     </div>  
+     <div align="center">
+      $　(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)$
+     </div>  
     </td></tr></table>
    </div>  
    
@@ -123,7 +127,7 @@
   <div align="center">
    <table><tr><td>
     $V_{r}=V&plus;Control$
-    <br>$V_{l}=V-Control$
+    <br>$V_{l}=V-Control　$
    </td></tr></table>
   </div>
 
@@ -204,15 +208,16 @@
 
   <div align="center">
    
-   | 回数 | 角度のずれ[deg/s] | |
-   | :---: | :---: | :---: |
-   |1|-9.8005|
-   |2|-9.8118|
-   |3|-9.3929|
-   |4|-8.8925|
-   |5|-8.7566|
+   | 回数 | 角度のずれ[deg/s] | k |
+   | :---: | :---: | --- |
+   |1|\2. -9.8005|
+   |2||-9.8118|
+   |3||-9.3929|
+   |4||-8.8925|
+   |5||-8.7566|
   
    </div>
+
    
 ## 9.マッピング
 　加減速走行を行うには，再現性のある走行とコースの記憶が必要となります．そのため走行経路を2次元座標にプロットし，再現性の確認とコースの記憶をできるようにしました．加減速走行をするだけなら，区間距離と角速度情報があればわざわざコースのプロットをする必要がありません．しかし，まだ先の話ですがショートカット走行を行う際に役立つと考えたので先行開発しました．
