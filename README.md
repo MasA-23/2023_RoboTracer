@@ -65,7 +65,7 @@
    <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/624c51fc-5e0c-4b81-ba9d-a0cc6703ef79" width="800px">
   </p>
   
-  　一定範囲外の値を正しく取得できていないことが分かります．これはジャイロのフルスケールレンジが関係しています．MPU6050の初期フルスケールレンジは±250°となっているため，±2000°に設定します．
+  　一定範囲外の値を正しく取得できていないことが分かります．これはジャイロのフルスケールレンジが関係しています．MPU6050の初期フルスケールレンジは±250deg/sとなっているため，±2000deg/sに設定します．
   
   <details><summary>フルスケールレンジ変更プログラム</summary>
  
@@ -81,10 +81,10 @@
   <br>
 
   　改めてグラフを作ると，値を正しく取得できている事が分かります．
- 
-<p align="center">
-<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/64335dca-c771-4c69-a1c2-abb5698ec233" width="800px">
-</p>
+
+  <p align="center">
+   <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/64335dca-c771-4c69-a1c2-abb5698ec233" width="800px">
+  </p>
   
 - CPU基盤の製作
 
@@ -103,28 +103,29 @@
 ## 6.制御方法
  　PD制御を用いてラインへの追従をしています．PD制御を行うには偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2...R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1，k2...k5 をかけます．
   
-  <table><tr><td>
-   <p align="center">
-    $e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-$
-    $(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)$
-   </p>
-  </td></tr></table>
-  
+  <div align="center">
+    <table><tr><td>
+     $e=(L5K5&plus;L4K4&plus;L3K3&plus;L2K2&plus;L1K1)-$
+     $(R5K5&plus;R4K4&plus;R3K3&plus;R2K2&plus;R1K1)$
+    </td></tr></table>
+   </div>  
+   
   　PD制御により制御量Controlを算出します．
    
-   <p align="center">
-    $Control(t)=K_{P}e(t)&plus;K_{D}\dot{e}(t)$
-   </p>
+   <div align="center">
+    <table><tr><td>
+     $Control(t)=K_{P}e(t)&plus;K_{D}\dot{e}(t)$
+    </td></tr></table>
+   </div>
    
    　速度Vに制御量を与えて<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{r}" title="V_{r}" />と<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{l}" title="V_{l}" />を算出します。
     
-  <p align="center">
-   $V_{r}=V&plus;Control$
-  </p>
-    
-  <p align="center">
-   $V_{l}=V-Control$
-  </p>
+  <div align="center">
+   <table><tr><td>
+    $V_{r}=V&plus;Control$
+    <br>$V_{l}=V-Control$
+   </td></tr></table>
+  </div>
 
 
 ## 7.ゴール判断
@@ -135,19 +136,22 @@
 
 　ロボットの角度は、角速度を積分する事で求められます。積分には様々な方法がありますが、計算での誤差を少なくするため、台形則を用います。面積を台形で近似するやつです。
 
-<p align="center">
-$\theta _{t}=\theta _{t-1}+\left(\omega _{t}+\omega _{t-1}\right)\Delta t/2\>$
-</p>
+<div align="center">
+ <table><tr><td>
+  <div align="center">
+   $\theta _{t}=\theta _{t-1}+\left(\omega _{t}+\omega _{t-1}\right)\Delta t/2$
+  </div>
+  <br>
+  <div align="center">
+   $\Delta t\>$ : サンプリング周期[ms]，
+   $\omega_{t}\>$ : t秒の角速度[deg]
+  </div>
+ </td></tr></table>
+</div>
 
-<p align="center">
-$\Delta t\>$ : サンプリング周期[ms]，
-$\omega_{t}\>$ : t秒の角速度[deg]
-</p>
-
-　一応これで角度の算出はできますが、オフセットなどによるドリフトが発生します。
- 
- <details><summary>センサを1分間静止させた時の角度のずれ</summary>
- 　<div align="center">
+　一応これで角度の算出はできますが、オフセットなどによるドリフトが発生します。センサを1分間静止させた時の角度のずれを以下に示します．
+ 　
+  <div align="center">
    
    | 回数 | 角度のずれ[deg/s] |
    | :---: | :---: |
@@ -158,39 +162,58 @@ $\omega_{t}\>$ : t秒の角速度[deg]
    |5|-8.7566|
   
    </div>
-  </details>
   
   <br>
   
 　平均すると約9.3°のずれが生じることが分かりました。ドリフトを補正するため、センサのキャリブレーションを行います。静止時にオフセット値を取得し，
  
- <p align="center">
-  $\theta _{t}=\theta _{t-1}+\left((\omega _{t}-offset+\omega _{t-1}\right)\Delta t/2)-drift$
- </p>
-
- <p align="center">
-  $offset$ : 静止時の平均角速度，
- </p>
-
- <p align="center">
-  $drift$ : 一定時間ジャイロセンサを静止させ，
- </p>
-
- <p align="center">
-  最後に取得した角速度をサンプリング周期当たりの補正値に変換したもの
- </p>
+ <div align="center">
+  <table><tr><td>
+   <div align="center">
+    $\theta _{t}=\theta _{t-1}+\left((\omega _{t}-offset+\omega _{t-1}\right)\Delta t/2)-drift$
+   </div>
+   <br>
+   <div align="center">
+    $offset$ : 静止時の平均角速度，
+   </div>
+   <div align="center">
+    $drift$ : 一定時間ジャイロセンサを静止させ，
+   </div>
+   <div align="center">
+    最後に取得した角速度をサンプリング周期当たりの補正値に変換したもの
+   </div>
+  </td></tr></table>
+ </div>
+ 
  <br>
  
- プログラム言語で記述すると以下のようになります．
+ 　プログラム言語で記述すると以下のようになります．
+  
+  <details><summary>角度計算プログラム</summary>
+   
+   ```Swift
+   #define GYRO_SENSITIVITY 16.4
+   #define DELTA_T 0.003
+   
+   degree += ( ( ( (float)gyro[2]-gyro_offset + degree_pre ) / GYRO_SENSITIVITY ) * DELTA_T / 2 ) - gyro_drift;
+   degree_pre = (float)gyro[2] - gyro_offset;
+   ```
+センサからの値を物理量に変換するために，レンジに対応した分解能で割ります．
 
-```Swift
-#define GYRO_SENSITIVITY 16.4
-#define DELTA_T 0.003
+</details>
 
-degree += ( ( ( (float)gyro[2]-gyro_offset + degree_pre ) / GYRO_SENSITIVITY ) * DELTA_T / 2 ) - gyro_drift;
-degree_pre = (float)gyro[2] - gyro_offset;
-```
-
+  <div align="center">
+   
+   | 回数 | 角度のずれ[deg/s] | |
+   | :---: | :---: | :---: |
+   |1|-9.8005|
+   |2|-9.8118|
+   |3|-9.3929|
+   |4|-8.8925|
+   |5|-8.7566|
+  
+   </div>
+   
 ## 9.マッピング
 　加減速走行を行うには，再現性のある走行とコースの記憶が必要となります．そのため走行経路を2次元座標にプロットし，再現性の確認とコースの記憶をできるようにしました．加減速走行をするだけなら，区間距離と角速度情報があればわざわざコースのプロットをする必要がありません．しかし，まだ先の話ですがショートカット走行を行う際に役立つと考えたので先行開発しました．
 
