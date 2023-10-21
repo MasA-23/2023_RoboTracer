@@ -31,7 +31,8 @@
 
 - 構成要素
   - マイコンボード : Raspberry Pi Pico
-  - アクチュエータ : PKE243A-L
+  - アクチュエータ : PKE243A-L(ステッピングモータ)
+  - バッテリ：LiPo/SIGP/3セル/1000mA
   - IMU : MPU-6050
   - ラインセンサ : LBR-127HLD
   - ADコンバータ : MCP3208
@@ -60,31 +61,6 @@
    <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/0492ced1-3b90-49bc-9984-d6cbd6b88eaa" width="500px">
   </p>
   
-  　走行中の角速度をグラフにすると，以下のようになります．
-  <p align="center">
-   <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/624c51fc-5e0c-4b81-ba9d-a0cc6703ef79" width="800px">
-  </p>
-  
-  　一定範囲外の値を正しく取得できていないことが分かります．これはジャイロのフルスケールレンジが関係しています．MPU6050の初期フルスケールレンジは±250deg/sとなっているため，±2000deg/sに設定します．
-  
-  <details><summary>フルスケールレンジ変更プログラム</summary>
- 
-  ```Swift
-  
-  #define MPU6050_ADDRESS 0x68
-  
-  uint8_t leg[] = {0x1B, 0x18};
-  i2c_write_blocking(gyro_i2c, MPU6050_ADDRESS,leg, sizeof(leg), false );
-  
-  ```
-  </details>
-  <br>
-
-  　改めてグラフを作ると，値を正しく取得できている事が分かります．
-
-  <p align="center">
-   <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/64335dca-c771-4c69-a1c2-abb5698ec233" width="800px">
-  </p>
   
 - CPU基盤の製作
 
@@ -163,6 +139,33 @@ dev_pre = dev;
 
 　単純にゴールセンサが反応した時にゴール判断をしてしまうと，クロスでもゴールセンサが反応してしまいます．そのため，クロスではゴール判断をしないという処理が必要となります．ゴールセンサがクロスに反応する前にラインセンサがクロスにかかるので，ライセンサを使ってクロスの判断ができそうです．両端のラインセンサが反応した時にフラグを立て，フラグが立っている時にゴールセンサが反応したら無視すればクロス問題は解決できそうです．
 
+## 8.ジャイロセンサのフルスケールレンジ
+  　走行中の角速度をグラフにすると，以下のようになります．
+  <p align="center">
+   <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/624c51fc-5e0c-4b81-ba9d-a0cc6703ef79" width="800px">
+  </p>
+  
+  　一定範囲外の値を正しく取得できていないことが分かります．これはジャイロのフルスケールレンジが関係しています．MPU6050の初期フルスケールレンジは±250deg/sとなっているため，±2000deg/sに設定します．
+  
+  <details><summary>フルスケールレンジ変更プログラム</summary>
+ 
+  ```Swift
+  
+  #define MPU6050_ADDRESS 0x68
+  
+  uint8_t leg[] = {0x1B, 0x18};
+  i2c_write_blocking(gyro_i2c, MPU6050_ADDRESS,leg, sizeof(leg), false );
+  
+  ```
+  </details>
+  <br>
+
+  　改めてグラフを作ると，値を正しく取得できている事が分かります．
+
+  <p align="center">
+   <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/64335dca-c771-4c69-a1c2-abb5698ec233" width="800px">
+  </p>
+  
 ## 8.ジャイロセンサを用いた角度の算出
 
 　ロボットの角度は、角速度を積分する事で求められます。積分には様々な方法がありますが、計算での誤差を少なくするため、台形則を用います。面積を台形で近似するやつです。
@@ -248,6 +251,7 @@ dev_pre = dev;
 
    
 ## 9.マッピング
+
 　加減速走行を行うには，再現性のある走行とコースの記憶が必要となります．そのため走行経路を2次元座標にプロットし，再現性の確認とコースの記憶をできるようにしました．加減速走行は区間距離と角速度情報があれば出来るため、コースのプロットをする必要がありません．しかし，まだ先の話ですがショートカット走行を行う際に役立つと考えたので開発を行いました。
 
 コースに固定された座標系を定義します。また、トレーサの運動を対向二輪ロボットの運動として考えます。
@@ -264,6 +268,8 @@ dev_pre = dev;
   </td></tr></table>
  </div>
 
+ 
+
 Δtで進む距離Δlを求めます。
 
 <div align="center">
@@ -276,9 +282,9 @@ $\Delta l=(\Delta s_{l}+\Delta s_{r})k/2$
 
 <div align="center">
   <table><tr><td>
-$\theta _{t}=\theta _{t-1}+\Delta\theta $
-</td></tr></table>
- </div>
+   $\theta _{t}=\theta _{t-1}+\Delta\theta $
+  </td></tr></table>
+</div>
 
  ジャイロを使わず、左右のステップ数から角度を求める事もできます。
  40 = tan-11(Asi - 4sr)k/2ds
