@@ -2,7 +2,8 @@
 ## 1.概要
 
 　この機体は，ロボトレース競技に参加するためにサークル標準機を改良したロボットです．ロボトレを始めてから1年が経過したため，今までの改良をまとめようと思います．また，改良内容の言語化による問題点の明確化やサークル内での情報共有も目的としています.
- 
+
+  
 ## 2.ディレクトリ構造
 
 ## 3.開発環境
@@ -264,21 +265,34 @@ dev_pre = dev;
 
  <div align="center">
   <table><tr><td>
+   <div align="center">
    $k=\theta _{s}/360\cdot 2\pi r$
+    </div>
+   <div align="center">
+    $\theta _{s}$ : ステップ角，
+    $r$ : 車輪半径
+    </div>
   </td></tr></table>
  </div>
 
- 
 
-Δtで進む距離Δlを求めます。
+$\Delta t$で進む距離
+$\Delta l$を求めます。
 
 <div align="center">
   <table><tr><td>
+   <div align="center">
 $\Delta l=(\Delta s_{l}+\Delta s_{r})k/2$
+    </div>
+   <div align="center">
+    $s_{r}$ : 左車輪のステップ数，
+    $s_{l}$ : 右車輪のステップ数，
+    </div>
 </td></tr></table>
  </div>
  
-次にt秒におけるロボットの角度を求めます。
+次に$t$秒におけるロボットの角度
+$\theta _{t}\$を求めます。
 
 <div align="center">
   <table><tr><td>
@@ -287,9 +301,11 @@ $\Delta l=(\Delta s_{l}+\Delta s_{r})k/2$
 </div>
 
  ジャイロを使わず、左右のステップ数から角度を求める事もできます。
- 40 = tan-11(Asi - 4sr)k/2ds
  
-そして、ロボットの座標(x,y)を求めます。
+ $\Delta\theta _{t}=tan^{-1}\begin{Bmatrix}{(s_{r}-s_{l})k/2d}\end{Bmatrix}\$
+ 
+そして、ロボットの座標
+$(x_{t},y_{t})$を求めます。
 
 <div align="center">
   <table><tr><td>
