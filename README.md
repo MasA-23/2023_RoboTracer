@@ -275,7 +275,7 @@ dev_pre = dev;
   </p>
 
 
-  不要なものを取り除くと、以下の図が得られます。
+  ロボットを取り除くと、以下の図が得られます。
 
  <p align="center">
    <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/159e9625-ccb6-48e5-bf4b-d1598f85df05" width="400px">
@@ -297,7 +297,7 @@ dev_pre = dev;
 
 
 $\Delta t$で進む距離
-$\Delta l$を求めます。
+$\Delta l$を求めます。Δtは微小区間のためΔlは直線と考えます。左右車輪の走行距離の平均を取ることで、車体中央の走行距離を求めます。
 
 <div align="center">
   <table><tr><td>
