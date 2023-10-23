@@ -78,17 +78,26 @@
   　標準機のタイヤ幅8mmは，重量700gに対して薄すぎたため，グリップ力が足りず180°のR10でスリップしていました．そのためタイヤ幅を厚くするパーツを製作しました．スポークに摩擦で固定しています．
   
 ## 6.制御方法
- 　以前は、ラインセンサの値を2値化して制御していましたが、より滑らかな走行にするためにPD制御を導入しました。
+ 　以前は、ラインセンサの値を2値化して制御していましたが、アナログ値を用いてより滑らかな走行にするためにPD制御を導入しました。
+  
 - アナログ値のキャリブレーション
   
-  PD制御を行うには，アナログ値を使用する必要があります．センサをライン上に置き、横方向に1mmずつ移動させた時の各センサのアナログ値は以下のようになります。値は0-999を使用
+  PD制御を行うには，アナログ値を使用する必要があります．センサをライン上に置き、横方向に1mmずつ移動させた時の各センサのアナログ値は以下のようになります。値は0-999としています．
 
+<p align="center">
+ <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/7ecac7a3-7bff-4834-83ce-8b31b0fe02a6" width="500px">
+</p>
 
-
-
-  センサの値は個体差や光環境によって値の校正が必要です．校正前のアナログ値を以下に示します．
+  黒色でも値は高い，白色９９９にしたい，個体差で黒色の出てくるあたいがちがう　，場所によって最低値最高値が異なる．だからこうせいすうｒ．
+  
   
   キャリブレーション，校正，リニア
+
+
+<p align="center">
+ <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/e4ce5c64-d5fe-4997-b626-ee5b83c8bc5e" width="500px">
+</p>
+
   
 PD制御を行うには偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2...R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1，k2...k5 をかけます．
   
@@ -175,7 +184,7 @@ dev_pre = dev;
 <div align="center">
  <table><tr><td>
   <div align="center">
-   $\theta _{t}=\theta _{t-1}+\left(\omega _{t}+\omega _{t-1}\right)\Delta t/2$
+   $\theta _{t+1}=\theta _{t}+\left(\omega _{t+1}+\omega _{t}\right)\Delta t/2$
   </div>
   <br>
   <div align="center">
@@ -206,7 +215,7 @@ dev_pre = dev;
  <div align="center">
   <table><tr><td>
    <div align="center">
-    $\theta _{t}=\theta _{t-1}+\left((\omega _{t}-offset+\omega _{t-1}\right)\Delta t/2)-drift$
+    $\theta _{t+1}=\theta _{t}+\left((\omega _{t+1}-offset+\omega _{t}\right)\Delta t/2)-drift$
    </div>
    <br>
    <div align="center">
@@ -256,12 +265,22 @@ dev_pre = dev;
 
 　加減速走行を行うには，再現性のある走行とコースの記憶が必要となります．そのため走行経路を2次元座標にプロットし，再現性の確認とコースの記憶をできるようにしました．加減速走行は区間距離と角速度情報があれば出来るため、コースのプロットをする必要がありません．しかし，まだ先の話ですがショートカット走行を行う際に役立つと考えたので開発を行いました。
 
+
 コースに固定された座標系を定義します。また、トレーサの運動を対向二輪ロボットの運動として考えます。
 
   Δt秒間でのロボットの移動を以下のように仮定します。
-  
+
+  <p align="center">
+   <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/fd787d87-81b7-4480-9cf6-d06ddfdb928a" width="400px">
+  </p>
+
+
   不要なものを取り除くと、以下の図が得られます。
 
+ <p align="center">
+   <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/159e9625-ccb6-48e5-bf4b-d1598f85df05" width="400px">
+  </p>
+ 
 ステッピングモータを使用しているため、まずは1ステップ当たりに進む距離kを求めます。
 
  <div align="center">
@@ -297,7 +316,7 @@ $\theta _{t}\$を求めます。
 
 <div align="center">
   <table><tr><td>
-   $\theta _{t}=\theta _{t-1}+\Delta\theta $
+   $\theta _{t+1}=\theta _{t}+\Delta\theta $
   </td></tr></table>
 </div>
 
@@ -306,15 +325,15 @@ $\theta _{t}\$を求めます。
  $\Delta\theta _{t}=tan^{-1}\begin{Bmatrix}{(s_{r}-s_{l})k/2d}\end{Bmatrix}\$
  
 そして、ロボットの座標
-$(x_{t},y_{t})$を求めます。
+$(x_{t+1},y_{t+1})$を求めます。
 
 <div align="center">
   <table><tr><td>
    <div align="center">
-    $x_{t}=x_{t-1}+\Delta lsin\theta_{t}$
+    $x_{t+1}=x_{t}+\Delta lsin\theta_{t}$
     </div>
    <div align="center">
-$y_{t}=y_{t-1}+\Delta lcos\theta _{t}$
+$y_{t+1}=y_{t}+\Delta lcos\theta _{t}$
 </div>
 </td></tr></table>
  </div>
