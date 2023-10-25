@@ -330,7 +330,12 @@ $\theta _{t}\$を求めます。
 
  ジャイロを使わず、左右のステップ数から角度を求める事もできます。
  
- $\Delta\theta _{t}=tan^{-1}\begin{Bmatrix}{(s_{r}-s_{l})k/2d}\end{Bmatrix}\$
+ <div align="center">
+  <table><tr><td>
+    $\Delta\theta=tan^{-1}((\Delta s_{r}-\Delta s_{l})k/2d)$
+  </td></tr></table>
+ </div>
+
  
 最後に、ロボットの座標()を算出します。xtにytにそれぞれの軸成分を積算します。
 $(x_{t+1},y_{t+1})$を求めます。
