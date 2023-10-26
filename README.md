@@ -92,10 +92,18 @@
 
   白線では最大値、黒色は最小値となるため、この2値を用いて正規化を行います。正規化に用いる式を以下に示します。
 
-式
+$\[y=\frac{x-x_{min}}{x_{max}-x_{min}}\times 999\]$
 
 正規化プログラム
 
+<details><summary>PD制御プログラム</summary>
+   
+   ```Swift
+long map(long x, long in_min, long in_max, long out_min, long out_max){
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+```
+</details>
 キャリブレーション後の結果を以下に示します。
 
 
@@ -105,6 +113,8 @@
 <p align="center">
  <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/e4ce5c64-d5fe-4997-b626-ee5b83c8bc5e" width="500px">
 </p>
+
+#### PD制御
 
   次に、制御について考えます。
 PD制御を行うには偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2...R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1，k2...k5 をかけます．
@@ -324,7 +334,7 @@ $\theta _{t}\$を求めます。
 
 <div align="center">
   <table><tr><td>
-   $\theta _{t+1}=\theta _{t}+\Delta\theta $
+    $\theta _{t+1}=\theta _{t}+\left((\omega _{t+1}-offset+\omega _{t}\right)\Delta t/2)-drift$
   </td></tr></table>
 </div>
 
@@ -332,6 +342,7 @@ $\theta _{t}\$を求めます。
  
  <div align="center">
   <table><tr><td>
+    $\theta _{t+1}=\theta _{t}+\Delta\theta $
     $\Delta\theta=tan^{-1}((\Delta s_{r}-\Delta s_{l})k/2d)$
   </td></tr></table>
  </div>
@@ -352,15 +363,48 @@ $y_{t+1}=y_{t}+\Delta lcos\theta _{t}$
  </div>
 
 プログラムで記述すると以下のようになります。
- 座標算出プログラム
+ <details><summary>座標算出プログラム</summary>
+  
+   ```Swift
+
+            MPU6050_ReadData( gyro );
+            degree += ( ( degree_pre +  ( (float)( gyro[2] - gyro_offset ) / GYRO_SENSITIVITY ) ) * DELTA_T / 2 ) - gyro_drift;
+            degree_pre = (float)( ( gyro[2] - gyro_offset ) / GYRO_SENSITIVITY);
 
 
- 
+            //角速度の保�?
+            angular_velocity[gyro_cnt] = (float)(( gyro[2] - gyro_offset ) / 16.4 );
+            
+            //xy座標�?�算�?�
+            float delta_distance;
+            float degree_rad;
+            delta_distance = ( STEP_L * STEP_DISTANCE + STEP_R * STEP_DISTANCE ) / 2;
+            STEP_R=0,STEP_L=0;
+
+            distance_sum += delta_distance;
+            
+            degree_rad = degree * M_PI / 180;
+
+            if( gyro_cnt == 0 ){
+                x_pos[gyro_cnt] = sin(degree_rad) * delta_distance;
+                y_pos[gyro_cnt] = cos(degree_rad) * delta_distance;
+            }else{
+                x_pos[gyro_cnt] = x_pos[gyro_cnt-1] + sin(degree_rad) * delta_distance;
+                y_pos[gyro_cnt] = y_pos[gyro_cnt-1] + cos(degree_rad) * delta_distance;
+            }
+
+            //値のセ�?�?
+            gyro_cnt++;
+```
+ </details>
 
 以下に二時限座標にプロットされたコースを示します。走行条件は、制御周期0.4ms 角速度のサンプリング周期
 
+![image](https://github.com/MasA-23/2023_RoboTracer/assets/147514546/e645200a-2967-442e-8bc1-62915128776b)
 
 5回走行させた時の目標座標とのズレを以下の表に示します。
+
+![image](https://github.com/MasA-23/2023_RoboTracer/assets/147514546/77ae9640-e018-4b99-9a6c-e49c791723cd)
 
 実験結果から、平均してmmのずれがある事が分かります。
 
