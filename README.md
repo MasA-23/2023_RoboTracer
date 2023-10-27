@@ -126,7 +126,7 @@ long map(long x, long in_min, long in_max, long out_min, long out_max){
    ### PD制御
 
   次に、制御について考えます。
-PD制御を行うには偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2...R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1，k2...k5 をかけます．
+PD制御を行うには、リニアな偏差eを求める必要があります．ラインセンサのアナログ値を左から L5，L4，L3，L2，L1，R1，R2...R5 とし，センサのアナログ値には距離が離れたセンサほど重みをつけるため，定数 k1，k2...k5 をかけます．
   
   <div align="center">
     <table><tr><td>
@@ -139,7 +139,7 @@ PD制御を行うには偏差eを求める必要があります．ラインセ�
     </td></tr></table>
    </div>  
    
-  　PD制御により制御量Controlを算出します．
+  　PD制御により制御量Controlを算出します．I成分は走行に違いが見られなかったため使用していません。
    
    <div align="center">
     <table><tr><td>
@@ -147,7 +147,7 @@ PD制御を行うには偏差eを求める必要があります．ラインセ�
     </td></tr></table>
    </div>
    
-   　速度Vに制御量を与えて<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{r}" title="V_{r}" />と<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{l}" title="V_{l}" />を算出します。
+   　平均速度Vに制御量を与えて<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{r}" title="V_{r}" />と<img src="https://latex.codecogs.com/svg.image?\inline&space;V_{l}" title="V_{l}" />を算出します。
     
   <div align="center">
    <table><tr><td>
@@ -195,8 +195,12 @@ dev_pre = dev;
   i2c_write_blocking(gyro_i2c, MPU6050_ADDRESS,leg, sizeof(leg), false );
   
   ```
-  </details>
-  <br>
+  
+  レジスタマップを参照してください。
+0x1B]レジスタのbit4、bit3でジャイロのフルスケールレンジが設定できます。
+レジスタマップを参照してください。[0x1B]レジスタのbit4、bit3でジャイロのフルスケールレンジが設定できます。
+
+</details>
 
   　改めてグラフを作ると，値を正しく取得できている事が分かります．
 
@@ -241,7 +245,7 @@ dev_pre = dev;
  
 ### ジャイロセンサのキャリブレーション
  
- ドリフトを補正するため、センサのキャリブレーションを行います。静止時にオフセット値を取得し，オフセットを補正した状態でドリフト補正値を取得します。キャリブレーション後の式を以下に示します。(値の取得を初めてから数秒以降の値を補正値として使用してください。最初の数秒は値が不安定になり、ドリフトが大きくなってしまいます。)
+ ドリフトを補正するため、センサのキャリブレーションを行います。静止時にオフセット値を取得し，オフセットを補正した状態でドリフト補正値を取得します。キャリブレーション後の式を以下に示します。(値の取得を初めてから数秒後の値を補正値として使用しています。最初の数秒は値が不安定になり、ドリフトが大きくなってしまいました。)
  
  <div align="center">
   <table><tr><td>
