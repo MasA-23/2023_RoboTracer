@@ -101,9 +101,8 @@
 $\[y=\frac{x-x_{min}}{x_{max}-x_{min}}\times 999\]$
 
 
-キャリブレーション後の結果を以下に示します。
+キャリブレーション後の結果を以下に示します。黒色時に100以下、白線時に約999の値を取得する事ができるようになりました。
 
-キャリブレーションは出来ていると考えられます。
 
 <p align="center">
  <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/e4ce5c64-d5fe-4997-b626-ee5b83c8bc5e" width="500px">
