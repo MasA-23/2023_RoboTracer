@@ -185,9 +185,7 @@ dev_pre = dev;
   
   ```
   
->  レジスタマップを参照してください。
-0x1B]レジスタのbit4、bit3でジャイロのフルスケールレンジが設定できます。
-レジスタマップを参照してください。[0x1B]レジスタのbit4、bit3でジャイロのフルスケールレンジが設定できます。
+>  レジスタマップを参照してください。[0x1B]レジスタのbit4、bit3でジャイロのフルスケールレンジが設定できます。
 
 </details>
 
@@ -230,7 +228,7 @@ dev_pre = dev;
   
   <br>
   
-　平均すると約9.3°のずれが生じることが分かりました。
+　平均すると約-9.3°のずれが生じることが分かりました。
  
 ### ジャイロセンサのキャリブレーション
  
@@ -254,10 +252,7 @@ dev_pre = dev;
   </td></tr></table>
  </div>
  
- <br>
- 
- 　プログラム言語で記述すると以下のようになります．
-  
+
   <details><summary>角度計算プログラム</summary>
    
    ```Swift
@@ -273,16 +268,17 @@ dev_pre = dev;
 キャリブレーション後の角度のずれを以下の表に示します。
   <div align="center">
    
-   | 回数 | calibあり | calibなし |
+   | 回数 | calibなし | calibあり |
    | :---: | :---: | :---: |
-   |1|0.0085|-9.8005|
-   |2|0.0129|-9.8118|
-   |3|-0.0665|-9.3929|
-   |4|-0.0134|-8.8925|
-   |5|0.0320|-8.7566|
-  
+   |1|-9.8005|0.0085|
+   |2|-9.8118|0.0129|
+   |3|-9.3929|-0.0665|
+   |4|-8.8925|-0.0134|
+   |5|-8.7566|0.0320|
+
+   
    </div>
-1分で平均-0.0053°のずれは誤差と言えると思います。
+1分間で平均-0.0053°までずれを抑えることができました．
 
    
 ## 9.マッピング
@@ -355,8 +351,9 @@ $\theta _{t}\$を求めます。
  </div>
 
  
-最後に、ロボットの座標()を算出します。xtにytにそれぞれの軸成分を積算します。
-$(x_{t+1},y_{t+1})$を求めます。
+最後に、ロボットの座標
+$(x_{t+1},y_{t+1})$を算出します。xtにytにそれぞれの軸成分を積算します。
+
 
 <div align="center">
   <table><tr><td>
@@ -369,45 +366,9 @@ $y_{t+1}=y_{t}+\Delta lcos\theta _{t}$
 </td></tr></table>
  </div>
 
-プログラムで記述すると以下のようになります。
- <details><summary>座標算出プログラム</summary>
-  
-   ```Swift
-
-            MPU6050_ReadData( gyro );
-            degree += ( ( degree_pre +  ( (float)( gyro[2] - gyro_offset ) / GYRO_SENSITIVITY ) ) * DELTA_T / 2 ) - gyro_drift;
-            degree_pre = (float)( ( gyro[2] - gyro_offset ) / GYRO_SENSITIVITY);
-
-
-            //角速度の保�?
-            angular_velocity[gyro_cnt] = (float)(( gyro[2] - gyro_offset ) / 16.4 );
-            
-            //xy座標�?�算�?�
-            float delta_distance;
-            float degree_rad;
-            delta_distance = ( STEP_L * STEP_DISTANCE + STEP_R * STEP_DISTANCE ) / 2;
-            STEP_R=0,STEP_L=0;
-
-            distance_sum += delta_distance;
-            
-            degree_rad = degree * M_PI / 180;
-
-            if( gyro_cnt == 0 ){
-                x_pos[gyro_cnt] = sin(degree_rad) * delta_distance;
-                y_pos[gyro_cnt] = cos(degree_rad) * delta_distance;
-            }else{
-                x_pos[gyro_cnt] = x_pos[gyro_cnt-1] + sin(degree_rad) * delta_distance;
-                y_pos[gyro_cnt] = y_pos[gyro_cnt-1] + cos(degree_rad) * delta_distance;
-            }
-
-            //値のセ�?�?
-            gyro_cnt++;
-```
- </details>
-
 ### マッピング結果
 
-以下に二時限座標にプロットされたコースを示します。走行条件は、制御周期0.4ms 角速度のサンプリング周期
+以下に二次元座標にプロットされたコースを示します。
 
 ![image](https://github.com/MasA-23/2023_RoboTracer/assets/147514546/e645200a-2967-442e-8bc1-62915128776b)
 
