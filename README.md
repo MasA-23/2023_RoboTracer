@@ -33,6 +33,7 @@
 - 構成要素
   - マイコンボード : Raspberry Pi Pico
   - アクチュエータ : PKE243A-L(ステッピングモータ)
+  - モータドライバ　: SLA7078MPRT
   - バッテリ：LiPo/SIGP/3セル/1000mA
   - IMU : MPU-6050
   - ラインセンサ : LBR-127HLD
