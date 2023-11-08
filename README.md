@@ -426,6 +426,14 @@ $y_{t+1}=y_{t}+\Delta lcos\theta _{t}$
 
 ノイズを除去する事ができました。
 
+## 12.二次走行における距離補正
+走行速度を上げていくと、
+
+
+
+
+
+
 [参考にさせていただいたサイト](https://github.com/raspberrypi/pico-examples/blob/master/i2c/mpu6050_i2c/mpu6050_i2c.c)
 
 [参考にさせていただいたサイト](https://qiita.com/jamjam/items/6d49f9200d809b4a1d72)
