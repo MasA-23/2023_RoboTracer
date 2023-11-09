@@ -66,7 +66,9 @@
   
 - CPU基盤の製作
 
-   　標準機のCPU基盤はサイズが大きいため，ラインセンサとの干渉がありました．また，ADコンバータやジャイロセンサの搭載に対応させるため，CPU基盤を新たに製作しました．<p align="center">
+   　標準機のCPU基盤はサイズが大きいため，ラインセンサとの干渉がありました．また，ADコンバータやジャイロセンサの搭載に対応させるため，CPU基盤を新たに製作しました．
+
+  <p align="center">
 　<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/f866006d-cce5-4cd9-96a5-14833bb76c3b" width="500px">
 </p>
 
@@ -74,8 +76,9 @@
 
     　上記の改良に対応したシャーシを，3Dプリンタで製作しました．
 
-  ![image](https://github.com/MasA-23/2023_RoboTracer/assets/147514546/9e0da6db-21b0-4399-ba01-a1510e437fc8)
-
+<p align="center">
+<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/9e0da6db-21b0-4399-ba01-a1510e437fc8" width="500px">
+</p>
 - タイヤ幅
   
   　標準機のタイヤ幅8mmは，重量700gに対して薄すぎたため，グリップ力が足りず180°のR10でスリップしていました．そのためタイヤ幅を厚くするパーツを製作しました．スポークに摩擦で固定しています．
@@ -371,15 +374,20 @@ $y_{t+1}=y_{t}+\Delta lcos\theta _{t}$
 
 以下に二次元座標にプロットされたコースを示します。
 
+<p align="center">
 <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/e645200a-2967-442e-8bc1-62915128776b" width="500px">
+</p>
 
 5回走行させた時の目標座標とのズレを以下の表に示します。
 
+<div align="center">
+  
 |       | 1回目  | 2回目  |3回目   | 4回目       | 5回目 |
 | ----- | ----  | ----- | ---   | --------  | --------- | 
 | x[mm]  | 3.05   | 16.35 | 5.78|8.74  |10.44 | 
 | y[mm]   | 32.02   | 28.09  | 10.92  |43 | 35.36 | 
 
+</div>
 
 実験結果から、平均してmmのずれがある事が分かります。
 
@@ -415,15 +423,21 @@ $y_{t+1}=y_{t}+\Delta lcos\theta _{t}$
 
 大会で取得した角速度を以下に示します。
 
+<p align="center">
 <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/82ac20b9-bd51-490d-b0b3-9939d2231b6c" width="500px">
+</p>
 
 大学のコースで取得した以下の角速度グラフと比較すると、大会コースデータにはノイズが多く含まれる事がわかります。
 
+<p align="center">
 <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/9161650f-319f-407a-a321-32a759c77ed3" width="500px">
+</p>
 
 原因について詳細には分かりませんが、大学より会場の光量が強かったため、制御が発振してしまったと考えられます。そのため、移動平均法を用いたノイズの除去を行いました。平均範囲は150msです。ノイズ除去後の角速度データを以下に示します。
 
+<p align="center">
 <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/465a1659-a133-4d22-8897-93845f5d3485" width="500px">
+</p>
 
 ノイズを除去する事ができました。
 
