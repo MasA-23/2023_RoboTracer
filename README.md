@@ -371,7 +371,7 @@ $y_{t+1}=y_{t}+\Delta lcos\theta _{t}$
 
 以下に二次元座標にプロットされたコースを示します。
 
-![image](https://github.com/MasA-23/2023_RoboTracer/assets/147514546/e645200a-2967-442e-8bc1-62915128776b)
+<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/e645200a-2967-442e-8bc1-62915128776b" width="500px">
 
 5回走行させた時の目標座標とのズレを以下の表に示します。
 
@@ -415,18 +415,15 @@ $y_{t+1}=y_{t}+\Delta lcos\theta _{t}$
 
 大会で取得した角速度を以下に示します。
 
-![image](https://github.com/MasA-23/2023_RoboTracer/assets/147514546/82ac20b9-bd51-490d-b0b3-9939d2231b6c)
-
+<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/82ac20b9-bd51-490d-b0b3-9939d2231b6c" width="500px">
 
 大学のコースで取得した以下の角速度グラフと比較すると、大会コースデータにはノイズが多く含まれる事がわかります。
 
-![image](https://github.com/MasA-23/2023_RoboTracer/assets/147514546/9161650f-319f-407a-a321-32a759c77ed3)
-
+<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/9161650f-319f-407a-a321-32a759c77ed3" width="500px">
 
 原因について詳細には分かりませんが、大学より会場の光量が強かったため、制御が発振してしまったと考えられます。そのため、移動平均法を用いたノイズの除去を行いました。平均範囲は150msです。ノイズ除去後の角速度データを以下に示します。
 
-![image](https://github.com/MasA-23/2023_RoboTracer/assets/147514546/465a1659-a133-4d22-8897-93845f5d3485)
-
+<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/465a1659-a133-4d22-8897-93845f5d3485" width="500px">
 
 ノイズを除去する事ができました。
 
