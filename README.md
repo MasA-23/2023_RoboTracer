@@ -69,8 +69,8 @@
    　標準機のCPU基盤はサイズが大きいため，ラインセンサとの干渉がありました．また，ADコンバータやジャイロセンサの搭載に対応させるため，CPU基盤を新たに製作しました．
 
   <p align="center">
-　<img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/f866006d-cce5-4cd9-96a5-14833bb76c3b" width="500px">
-</p>
+    <img src="https://github.com/MasA-23/2023_RoboTracer/assets/147514546/f866006d-cce5-4cd9-96a5-14833bb76c3b" width="500px">
+  </p>
 
 - シャーシの製作
 
